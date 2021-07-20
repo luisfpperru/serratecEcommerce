@@ -66,7 +66,7 @@ public class ProdutoService {
 		this.validarProduto(produto);
 		produto.setId(null);
 		produto.setDataDeCadastroDoProduto(new Date());
-		var adicionado = _repositorioProduto.save(produto);
+		Produto adicionado = _repositorioProduto.save(produto);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
@@ -74,7 +74,7 @@ public class ProdutoService {
 		Produto produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
 		String enderecoImagem = servicoUpload.salvar("/img", imagem);
 		produto.setImagem(enderecoImagem);
-		var atualizado = _repositorioProduto.save(produto);
+		Produto atualizado = _repositorioProduto.save(produto);
 		return new ResponseEntity<>(atualizado, HttpStatus.CREATED);
 	}
 	
@@ -82,7 +82,7 @@ public class ProdutoService {
  		Produto produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
 		Long categoriaId = produtoRequest.getCategoriaId();
 		if (categoriaId != null) {
-			var categoria = _repositorioCategoria.findById(categoriaId);
+			Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
 			if (categoria.isEmpty())
 				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
 			produto.setCategoria(categoria.get());

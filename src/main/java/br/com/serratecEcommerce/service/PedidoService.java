@@ -46,7 +46,7 @@ public class PedidoService {
 	}
 	
 	public ResponseEntity<Pedido> adicionar(PedidoRequest pedidoRequest){
-		var pedido = new Pedido();
+		Pedido pedido = new Pedido();
 		if (!pedidoRequest.getProdutosId().isEmpty()) {
 		pedidoRequest.getProdutosId().forEach(produtoId -> 
 			{Optional<Produto> produto = _repositorioProduto.findById(produtoId);
@@ -56,14 +56,14 @@ public class PedidoService {
 		}
 		Long clienteId = pedidoRequest.getClienteId();
 		if (clienteId != null) {
-			var cliente = _repositorioCliente.findById(clienteId).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + clienteId));
+			Cliente cliente = _repositorioCliente.findById(clienteId).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + clienteId));
  			pedido.setCliente(cliente);
 		}
 		pedido.setNumeroDoPedido( (int) (Math.random()*((999999- 100000) + 1)) + 100000);
 		pedido.setStatus(pedidoRequest.getStatus());
 		calcularValorTotal(pedido);
 		pedido.setDataDoPedido(new Date());
-		var adicionado = this._repositorioPedido.save(pedido);
+		Pedido adicionado = this._repositorioPedido.save(pedido);
 		checarPedidoFinalizado(adicionado);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
@@ -86,7 +86,7 @@ public class PedidoService {
 		pedido.setStatus(pedidoRequest.getStatus());
 		calcularValorTotal(pedido);
  		pedido.setId(id); 		
- 		var atualizado = this._repositorioPedido.save(pedido);
+ 		Pedido atualizado = this._repositorioPedido.save(pedido);
  		checarPedidoFinalizado(pedido);
  		return atualizado;
 	 }
@@ -97,7 +97,7 @@ public class PedidoService {
 	 }
 	 
 	 private void calcularValorTotal(Pedido pedido) {
-		 var valorTotal = 0.0;
+		 double valorTotal = 0.0;
 		 if (!pedido.getProdutos().isEmpty()) {
 			 for (Produto produto:pedido.getProdutos())
 			 	valorTotal += produto.getPreco();					
@@ -111,7 +111,7 @@ public class PedidoService {
 	}
 	private void checarPedidoFinalizado(Pedido pedido) {
 		if (pedido.getStatus().equals("finalizado") || pedido.getStatus().equals("Finalizado")) {
-			var destinatarios = new ArrayList<String>();
+			ArrayList<String> destinatarios = new ArrayList<String>();
 			destinatarios.add("labratinformatica@gmail.com");
 			destinatarios.add(pedido.getCliente().getEmail());
 			String html = "<html>"
@@ -133,7 +133,7 @@ public class PedidoService {
 											+ "</body>"
 											+ "</html>";
 
-			var email  = new MensagemEmail("Sua compra foi finalizada com sucesso!",
+			MensagemEmail email  = new MensagemEmail("Sua compra foi finalizada com sucesso!",
 											html,	   
 										   "Lab Rat Eletronicos <labratinformatica@gmail.com>",
 										   destinatarios);

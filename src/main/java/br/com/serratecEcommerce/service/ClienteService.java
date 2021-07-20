@@ -3,6 +3,7 @@ package br.com.serratecEcommerce.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class ClienteService {
 	}
 	
 	public List<Cliente> obterPorNome(String nome){
-		var clientes = this._repositorioCliente.findByNome(nome);
+		List<Cliente> clientes = this._repositorioCliente.findByNome(nome);
 		if (clientes.isEmpty())
 			throw new ResourceNotFoundException("Cliente não encontrado(a) pelo Nome:" + nome);
 		return clientes;
@@ -109,7 +110,7 @@ public class ClienteService {
 	 }
 
 	 public void deletar(Long id) {
-		 var cliente = _repositorioCliente.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+		 Cliente cliente = _repositorioCliente.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + id));
 		 if (!cliente.getEndereco().getId().equals(null))
 				this._repositorioEndereco.deleteById(cliente.getEndereco().getId());
 		 this._repositorioCliente.deleteById(id);
@@ -152,7 +153,7 @@ public class ClienteService {
 		}
 	 	
 	 	private void enviarEmailCadastro(Cliente cliente){
-	 		var destinatarios = new ArrayList<String>();
+	 		ArrayList<String> destinatarios = new ArrayList<String>();
 			destinatarios.add("labratinformatica@gmail.com");
 			destinatarios.add(cliente.getEmail());
 			String html = "<html>"
@@ -169,7 +170,7 @@ public class ClienteService {
 											+ "</body>"
 											+ "</html>";
 
-			var email  = new MensagemEmail("Seu cadastro foi concluido com sucesso!",
+			MensagemEmail email  = new MensagemEmail("Seu cadastro foi concluido com sucesso!",
 											html,	   
 										   "Lab Rat Eletronicos <labratinformatica@gmail.com>",
 										   destinatarios);
@@ -185,7 +186,7 @@ public class ClienteService {
 			
 			String token = headerPrefix + jwtService.gerarToken(autenticacao);
 			
-			var cliente = _repositorioCliente.findByEmail(email);
+			Optional<Cliente> cliente = _repositorioCliente.findByEmail(email);
 			
 			return new LoginResponse(token, cliente.get());
 		}

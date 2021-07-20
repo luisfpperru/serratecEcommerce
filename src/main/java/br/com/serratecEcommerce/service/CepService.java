@@ -27,7 +27,7 @@ public class CepService {
 					
 			// Aqui eu poderia tbm me comunicar com outras apis simultaneamente.
 			
-			var endereco = monoEndereco.block(); // Fica aguardando o retorno da api e devolve o body obtido.
+			Endereco endereco = monoEndereco.block(); // Fica aguardando o retorno da api e devolve o body obtido.
 			if (endereco.equals(null))
 				throw new ResourceNotFoundException("O CEP não foi encontrado!");
 			return endereco;

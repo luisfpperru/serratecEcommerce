@@ -2,6 +2,7 @@ package br.com.serratecEcommerce.security;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,7 +36,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		String token = pegarToken(request);
 		
 		//Pego o id do usuário que está dentro do token.
-		var id = jwtService.obterIdDoUsuario(token);
+		Optional<Long> id = jwtService.obterIdDoUsuario(token);
 		
 		//Se vier alguma coisa, eu vou autenticar ou permitir o acesso, caso contrario eu só vou filtrar.
 		if(id.isPresent()) {

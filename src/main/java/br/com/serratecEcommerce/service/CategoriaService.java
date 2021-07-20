@@ -1,7 +1,6 @@
 package br.com.serratecEcommerce.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ public class CategoriaService {
 	
 	public ResponseEntity<Categoria> adicionar(Categoria categoria) {
 		categoria.setId(null);
-		var adicionado = _repositorioCategoria.save(categoria);
+		Categoria adicionado = _repositorioCategoria.save(categoria);
 		return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	

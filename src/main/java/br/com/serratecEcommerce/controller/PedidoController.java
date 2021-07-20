@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Pedido;
 import br.com.serratecEcommerce.model.PedidoRequest;
-import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.service.PedidoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
