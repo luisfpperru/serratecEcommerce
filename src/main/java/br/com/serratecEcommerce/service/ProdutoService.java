@@ -51,7 +51,7 @@ public class ProdutoService {
 		Long categoriaId = produtoRequest.getCategoriaId();
 		if (categoriaId != null) {
 			Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
-			if (categoria.isEmpty())
+			if (!categoria.isPresent())
 				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
 			produto.setCategoria(categoria.get());
 		}
@@ -83,7 +83,7 @@ public class ProdutoService {
 		Long categoriaId = produtoRequest.getCategoriaId();
 		if (categoriaId != null) {
 			Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
-			if (categoria.isEmpty())
+			if (!categoria.isPresent())
 				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
 			produto.setCategoria(categoria.get());
 		}
