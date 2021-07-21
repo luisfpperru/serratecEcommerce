@@ -18,12 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.model.ProdutoRequest;
 import br.com.serratecEcommerce.service.ProdutoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
-
-@CrossOrigin(origins = "*")
-@Api(value = "API REST Serratec E-Commerce - PRODUTO")
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
@@ -31,44 +26,37 @@ public class ProdutoController {
 	@Autowired
 	ProdutoService _servicoProduto;
 	
-	@ApiOperation(value = "Retorna uma lista com todos os produtos")
 	@GetMapping
 	public List<Produto> obterTodos(){
 		return _servicoProduto.obterTodos();
 	}
 
-	@ApiOperation(value = "Retorna um produto pelo ID")
 	@GetMapping("/id/{id}")
 	public Produto obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoProduto.obterPorId(id);
 	}
 	
-	@ApiOperation(value = "Retorna um produto que contenha aquele texto no nome")
 	@GetMapping("/nome/{nome}")
 	public List<Produto> obterPorNome(@PathVariable(value = "nome") String nome){
 		return _servicoProduto.obterPorNome(nome);
 	}
 	
-	@ApiOperation(value = "Adiciona um produto")
 	@PostMapping
 	public ResponseEntity<Produto> adicionar(@RequestBody ProdutoRequest produtoRequest){
         return _servicoProduto.adicionar(produtoRequest);
 	}
 	
-	@ApiOperation(value = "Adiciona uma imagem ao produto")
 	@PutMapping("/imagem/{id}")
 	public ResponseEntity<Produto> adicionarImagemAoProduto(@PathVariable(value = "id") Long id,
 															@RequestBody MultipartFile imagem){
         return _servicoProduto.adicionarImagemAoProduto(id, imagem);
 	}
 	
-	@ApiOperation(value = "Atualiza um produto existente")
 	@PutMapping("/id/{id}")
 	 public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody ProdutoRequest produtoRequest) {
          return _servicoProduto.atualizar(id, produtoRequest);
 	 }
 
-	 @ApiOperation(value = "Deleta um produto existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
 		_servicoProduto.deletar(id);
